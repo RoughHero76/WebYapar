@@ -67,7 +67,6 @@ const RegisterUser = () => {
             setErrorMessage('Passwords do not match.');
             return false;
         }
-        // Add more validation as needed
         return true;
     };
     return (

@@ -42,6 +42,7 @@ const RegisterUser = () => {
                     setEmail('');
                     setPassword('');
                     setReEnteredPassword('');
+                    navigate.navigate('Login');
                 } else {
                     setErrorMessage(response.data.message);
                 }
@@ -50,6 +51,8 @@ const RegisterUser = () => {
             console.error('Error:', error);
             if (error.response) {
                 setErrorMessage(error.response.data.message);
+            } else if (error.request) {
+                setErrorMessage('Network Error: Please check your internet connection.');
             } else {
                 setErrorMessage('An error occurred while signing up.');
             }

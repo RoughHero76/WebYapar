@@ -41,6 +41,14 @@ const Login = () => {
 
 
     const handleLogin = async () => {
+
+        if (!email) {
+            setErrorMessage('Email is required');
+            return;
+        } else if (!password) {
+            setErrorMessage('Password is required');
+            return;
+        }
         setLoading(true);
         try {
             const response = await axios.post('https://test.webyaparsolutions.com/auth/user/login', {

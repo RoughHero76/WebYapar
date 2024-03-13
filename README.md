@@ -12,16 +12,16 @@ This React Native project consists of multiple screens designed to create a seam
 ### 2. SignUp Screen
 - Enables new users to register for the application by providing their full name, email, and password.
 - Implements form validation to ensure all required fields are filled correctly.
-- Allows users to sign up with their existing Google, Apple, or Facebook accounts.
+- Allows users to sign up with their existing Google, Apple, or Facebook accounts. (Social not implemented) 
 - Provides a link to navigate back to the login screen.
 
-### 3. Send Location Screen
-- Allows authenticated users to send their current location along with an optional image attachment.
+### 3. Send Image with Location Screen
+- Allows authenticated users to location along with animage attachment.
 - Utilizes device permissions to access the camera for capturing images.
 - Validates user input and handles network requests securely.
 - Provides options to fetch data from the server or log out from the application.
 
-### 4. Retrieve Location Screen
+### 4. Retrieve Images with Location Screen
 - Enables users to retrieve previously sent location data and associated images.
 - Fetches data securely from the server using authentication tokens.
 - Displays retrieved images with their respective locations.

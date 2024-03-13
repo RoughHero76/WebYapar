@@ -153,7 +153,7 @@ const SendLocation = () => {
                 <View style={styles.rowContainer}>
                     <TouchableOpacity style={styles.attachProofButton}>
                         <Text style={styles.attachProofText}>
-                            {selectedDocument ? `Attached: ${selectedDocument}` : 'Attach proof of registration'}
+                            {selectedDocument ? `Take a photo: ${selectedDocument}` : 'Your Photo'}
                         </Text>
                     </TouchableOpacity>
 

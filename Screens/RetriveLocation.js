@@ -40,7 +40,6 @@ const RetriveLocation = () => {
 
             console.log('Response:', response.data);
             if (response.data.success) {
-                Alert.alert('Success', response.data.message);
                 setImages(response.data.data);
             } else {
                 Alert.alert('Unsuccessful response:', response.data.message);

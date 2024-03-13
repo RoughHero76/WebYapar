@@ -31,7 +31,6 @@ const App = () => {
             name="SignUp"
             component={SignUp}
             options={{
-
               headerBackVisible: false,
               headerShown: false,
             }}
@@ -44,6 +43,7 @@ const App = () => {
               headerBackVisible: false,
               gestureEnabled: false,
               headerShown: false,
+              fullScreenGestureEnabled: false,
             }}
           />
 

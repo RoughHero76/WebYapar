@@ -1,18 +1,20 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback, TouchableOpacity, Image, ScrollView, Alert, ActivityIndicator, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LogoutIcon from '../assets/icons/logout.png';
-
+import location from '../assets/icons/location.png';
 
 const SendLocation = () => {
 
     const navigate = useNavigation();
     const [selectedDocument, setSelectedDocument] = useState('');
     const [loading, setLoading] = useState(false);
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
 
     useEffect(() => {
 
@@ -64,8 +66,7 @@ const SendLocation = () => {
 
         setLoading(true);
         try {
-            const latitude = '12.9716';
-            const longitude = '77.5946';
+
             const token = await AsyncStorage.getItem('token');
             const formData = new FormData();
             formData.append('latitude', latitude);
@@ -130,68 +131,90 @@ const SendLocation = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Image source={LogoutIcon} style={styles.logutIcon} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Send And Retrieve Location</Text>
 
-            <ScrollView style={styles.mainContainer}>
-                <Text style={styles.greetingUser}>Send Location</Text>
-                <Text style={styles.grayText}>
-                    You can Press On Camera Button To Take Photo and Send The Location
-                </Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-                {/* Display the selected image */}
-                {selectedDocument && (
-                    <Image
-                        source={{ uri: selectedDocument }}
-                        style={{ width: 200, height: 200, marginBottom: 20 }}
-                    />
-                )}
 
-                <View style={styles.rowContainer}>
-                    <TouchableOpacity style={styles.attachProofButton}>
-                        <Text style={styles.attachProofText}>
-                            {selectedDocument ? `Take a photo: ${selectedDocument}` : 'Your Photo'}
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.cameraButton} onPress={handleCameraPress}>
-                        <Image
-                            source={{
-                                uri: 'https://cdn-icons-png.flaticon.com/128/685/685655.png',
-                            }}
-                            style={styles.cameraIcon}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-
-            <View style={styles.continueButtonContainer}>
-                <TouchableOpacity style={styles.continueButton} onPress={RetriveLocation}>
-                    <Text style={styles.continueButtonText}> Fetch Data </Text>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                    <Image source={LogoutIcon} style={styles.logutIcon} />
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.continueButton, loading && styles.disabledButton]} onPress={handleSubmitButton} disabled={loading}>
+                <Text style={styles.headerTitle}>Send And Retrieve Location</Text>
 
-                    {loading ? (
-                        <>
+                <ScrollView style={styles.mainContainer}>
+                    <Text style={styles.greetingUser}>Send Location</Text>
+                    <Text style={styles.grayText}>
+                        You can Press On Camera Button To Take Photo and Send The Location
+                    </Text>
 
-                            <ActivityIndicator size="small" color="white" />
-                            <Text style={styles.continueButtonText}> Please Wait..</Text>
-                        </>
-                    ) : (
-                        <Text style={styles.continueButtonText}>Send Image</Text>
+                    {/* Display the selected image */}
+                    {selectedDocument && (
+                        <Image
+                            source={{ uri: selectedDocument }}
+                            style={{ width: 200, height: 200, marginBottom: 20 }}
+                        />
                     )}
 
+                    <View style={styles.rowContainer}>
+                        <TouchableOpacity style={styles.attachProofButton}>
+                            <Text style={styles.attachProofText}>
+                                {selectedDocument ? `Picture: ${selectedDocument}` : 'Take a picture'}
+                            </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.cameraButton} onPress={handleCameraPress}>
+                            <Image
+                                source={{
+                                    uri: 'https://cdn-icons-png.flaticon.com/128/685/685655.png',
+                                }}
+                                style={styles.cameraIcon}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.rowContainer2}>
+                        <Image source={location} style={styles.iconLocation} />
+                        <TextInput
+                            style={styles.inputLocation}
+                            placeholder="Input Latitude"
+                            placeholderTextColor="gray"
+                            underlineColorAndroid="transparent"
+                            onChangeText={setLatitude}
+                        />
+                        <TextInput
+                            style={styles.inputLocation}
+                            placeholder="Input Longitude"
+                            placeholderTextColor="gray"
+                            underlineColorAndroid="transparent"
+                            onChangeText={setLongitude}
+                        />
+                    </View>
+                </ScrollView>
+
+                <View style={styles.continueButtonContainer}>
+                    <TouchableOpacity style={styles.continueButton} onPress={RetriveLocation}>
+                        <Text style={styles.continueButtonText}> Fetch Data </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.continueButton, loading && styles.disabledButton]} onPress={handleSubmitButton} disabled={loading}>
+
+                        {loading ? (
+                            <>
+
+                                <ActivityIndicator size="small" color="white" />
+                                <Text style={styles.continueButtonText}> Please Wait..</Text>
+                            </>
+                        ) : (
+                            <Text style={styles.continueButtonText}>Send Image</Text>
+                        )}
+
+                    </TouchableOpacity>
+
+                </View>
+                <TouchableOpacity style={styles.resetButton} onPress={hanldeResetImage}>
+                    <Text style={styles.continueButtonText}>Reset Media</Text>
                 </TouchableOpacity>
-
-
             </View>
-            <TouchableOpacity style={styles.resetButton} onPress={hanldeResetImage}>
-                <Text style={styles.continueButtonText}>Reset Media</Text>
-            </TouchableOpacity>
-        </View>
+        </TouchableWithoutFeedback>
+
     );
 };
 
@@ -227,6 +250,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
+    },
+    rowContainer2: {
+        flexDirection: 'row',
+        marginBottom: 0,
+        marginRight: 20,
     },
     attachProofButton: {
         flex: 1,
@@ -271,8 +299,9 @@ const styles = StyleSheet.create({
         borderRadius: 117,
         width: 150,
         height: 48,
-        marginBottom: 100,
-        marginLeft: 20,
+        marginBottom: 80,
+
+        alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
 
@@ -294,6 +323,23 @@ const styles = StyleSheet.create({
     logutIcon: {
         width: 24,
         height: 24,
+    },
+    inputLocation: {
+        flex: 1,
+        color: 'black',
+        backgroundColor: '#ededed',
+        paddingVertical: 5, // Adjust vertical padding as needed
+        marginHorizontal: 5,
+        borderRadius: 10,
+    },
+    iconLocation: {
+        marginLeft: 15,
+        padding: 10,
+        margin: 5,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        alignItems: 'center',
     },
 });
 

@@ -22,15 +22,13 @@ const RetriveLocation = () => {
         checkToken();
     });
 
-
     const [loading, setLoading] = useState(false);
     const [images, setImages] = useState([]);
-
 
     const handleFetchData = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            console.log('Token:', token);
+            /*             console.log('Token:', token); */
             setLoading(true);
             const response = await axios.get('https://test.webyaparsolutions.com/data', {
                 headers: {
@@ -38,26 +36,25 @@ const RetriveLocation = () => {
                 },
             });
 
-            console.log('Response:', response.data);
+            /*             console.log('Response:', response.data); */
             if (response.data.success) {
                 setImages(response.data.data);
             } else {
                 Alert.alert('Unsuccessful response:', response.data.message);
             }
         } catch (error) {
-            // Handle errors
+
             console.error('Error fetching data:', error);
             if (error.response) {
                 //console.log('Response error:', error.response.data);
                 //console.log('Response status:', error.response.status);
-                // Display alert for response error
+
                 Alert.alert('Response Error', error.response.data.message);
             } else if (error.request) {
                 // console.log('Request error:', error.request);
-                // Display alert for request error
                 Alert.alert('Request Error', 'Failed to make the request. Please check your internet connection.');
             } else {
-                console.log('Other error:', error.message);
+                /*    console.log('Other error:', error.message); */
                 // Display alert for other errors
                 Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
             }
@@ -81,11 +78,14 @@ const RetriveLocation = () => {
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 <View style={styles.imageContainer}>
                     {images.map((image, index) => (
-                        <Image
-                            key={index}
-                            source={{ uri: `https://test.webyaparsolutions.com${image.file}` }}
-                            style={styles.image}
-                        />
+                        <View key={index} style={styles.imageItem}>
+                            <Image
+                                source={{ uri: `https://test.webyaparsolutions.com${image.file}` }}
+                                style={styles.image}
+                            />
+                            <Text style={styles.locationText}>Latitude: {image.location.latitude}</Text>
+                            <Text style={styles.locationText}>Longitude: {image.location.longitude}</Text>
+                        </View>
                     ))}
                 </View>
             </ScrollView>
@@ -164,9 +164,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
     },
     image: {
-        width: '49%',
+        width: '90%',
         height: 150,
         marginVertical: 5,
+    },
+    imageItem: {
+        width: '50%',
+        marginVertical: 5,
+    },
+    locationText: {
+        fontSize: 12,
+        color: 'black',
+        marginTop: 5,
     },
 });
 
